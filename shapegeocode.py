@@ -36,7 +36,11 @@ class geocoder:
 
 	def geocode(self, lat, lon, filter=None, max_dist=0.0):
 		"""
-		return shape record for latlon position
+		Return shape record of the 1st polygon that contains (lat,lon).
+		
+		Keyword arguments:
+		filter -- an optional filter function
+		max_dist -- if no matching polygon was found, the nearest polygon with distance smaller than max_dist is returned. unit is kilometer. (default 0.0)   
 		"""
 		for i in range(len(self.polygons)):
 			rec = self.records[i]
@@ -51,6 +55,8 @@ class geocoder:
 		
 		# no matching polygon found so far
 		# so let's find the nearest polygon
+		from math import cos, sqrt, radians
+		
 		if max_dist > 0:	
 			global_min_dist = sys.maxint
 			globel_nearest_ll = None
@@ -62,13 +68,19 @@ class geocoder:
 				rec = self.records[i]
 				if filter and filter(rec) is False: continue
 				bbox = self.bboxes[i]
-				if _point_in_bbox(_inflate_bbox(bbox, 1.2), (lon,lat)):
+				if _point_in_bbox(_inflate_bbox(bbox, 1.5), (lon,lat)):
 					poly = self.polygons[i]
 					for j in range(len(poly)):
-						contour = poly[i]
+						contour = poly[j]
 						for x,y in contour:
-							dx = x - lon
-							dy = y - lat
+							# Pythagoras' theorem, borrowed from
+							# http://www.movable-type.co.uk/scripts/latlong.html
+							lat0 = radians(y)
+							lat1 = radians(lat)
+							lon0 = radians(x)
+							lon1 = radians(lon)
+							dx = (lon1 - lon0) * cos((lat0+lat1)*0.5)
+							dy = (lat1 - lat0)
 							dist = dx*dx + dy*dy
 							if dist < min_dist:
 								min_dist = dist
@@ -76,8 +88,9 @@ class geocoder:
 				if min_dist < global_min_dist:
 					global_min_dist = min_dist
 					nearest_poly = i
-						
-			if global_min_dist < max_dist:
+			
+			min_dist_km = sqrt(global_min_dist) * 6371
+			if min_dist_km <= max_dist:
 				return self.records[nearest_poly]
 		return None
 
