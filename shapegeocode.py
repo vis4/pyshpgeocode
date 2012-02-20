@@ -11,14 +11,21 @@ class geocoder:
 		self.shp_src = shp_src
 		self._init_polygons(filter)
 
+
 	def _init_polygons(self, filter=None):
 		sf = shapefile.Reader(self.shp_src)
+		fields = []
+		for f in sf.fields[1:]:
+			fields.append(f[0])
 		recs = sf.records()
 		self.polygons = []
 		self.bboxes = []
 		self.records = []
 		for i in range(len(recs)):
-			rec = recs[i]
+			_rec = recs[i]
+			rec = {}
+			for j in range(len(fields)):
+				rec[fields[j]] = _rec[j]		
 			if filter and filter(rec) == False: continue
 			shp = sf.shapeRecord(i).shape
 			poly,bbox = _shape_to_polygon(shp)
@@ -31,7 +38,6 @@ class geocoder:
 		"""
 		return shape record for latlon position
 		"""
-		
 		for i in range(len(self.polygons)):
 			rec = self.records[i]
 			if filter and filter(rec) is False: continue
@@ -74,7 +80,7 @@ class geocoder:
 			if global_min_dist < max_dist:
 				return self.records[nearest_poly]
 		return None
-		
+
 		
 
 
@@ -110,7 +116,6 @@ def _point_in_polygon(polygon, p):
 		x2,y2 = (polygon[(i+1)%n][0] - p[0], polygon[(i+1)%n][1] - p[1])
 		theta1 = atan2(y1,x1)
 		theta2 = atan2(y2,x2)
-		self.atan2cnt += 2
 		dtheta = theta2 - theta1
 		while dtheta > pi:
 			dtheta -= twopi
