@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 long_desc = """
-shpgeocode is a geocoding 
+shpgeocode is a library for reverse geocoding using ESRI shapefiles
 """
 
 
 setup(
     name='pyshpgeocode',
     version='0.1',
-    description="..",
+    description="reverse geocoding using shapefiles",
     long_description=long_desc,
     classifiers=[
         "Development Status :: 3 - Alpha",
