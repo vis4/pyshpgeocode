@@ -1,6 +1,6 @@
 # shapegeocode
 
-This Python package enables to geocode without any external geocoding service. It is developed primarily for assigning administrative region codes to a set of geo coordinates (in standard latitude/longitude). All you need is a shapefile of the regions you want to geocode to.
+This Python package for reverse geocoding using ESRI shapefiles. It is developed primarily for assigning administrative region codes to a set of geo coordinates (in standard latitude/longitude). All you need is a shapefile of the regions you want to geocode to.
 
 Usage example:
 
@@ -17,8 +17,7 @@ Usage example:
 
 ### Bag of tricks
 
-
-You can speed up the geocoding by limiting the number of polygons that need to be tested. This can be achieved by injecting a ``filter`` function either to the ``geocoder`` constructor or per each ``geocode`` call . 
+You can speed up the reverse geocoding by limiting the number of polygons that need to be tested. This can be achieved by injecting a ``filter`` function either to the ``geocoder`` constructor or per each ``geocode`` call . 
 
 ```python 
 # consider only polygons that have STAT_LEVL_ == 2
