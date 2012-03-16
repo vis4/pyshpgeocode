@@ -9,8 +9,8 @@ Usage example:
 >>> gc = shapegeocode.geocoder('NUTS_RG_03M_2006.shp')
 >>> gc.geocode(52.1, 11.7)
 {
-	'NUTS_ID': 'DEE0', 
-	'OBJECTID': 271, 
+	'NUTS_ID': 'DEE0',
+	'OBJECTID': 271,
 	'STAT_LEVL_': 2
 }
 ```
