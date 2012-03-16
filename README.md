@@ -1,6 +1,6 @@
-# shapegeocode
+# pyshpgeocode – merging data and geography
 
-This Python package for reverse geocoding using ESRI shapefiles. It is developed primarily for assigning administrative region codes to a set of geo coordinates (in standard latitude/longitude). All you need is a shapefile of the regions you want to geocode to.
+This Python package is for reverse geocoding of data points to shapefile regions. It is developed primarily for assigning administrative region codes to a set of geo coordinates (in standard latitude/longitude). All you need is a shapefile of the regions you want to geocode to.
 
 Usage example:
 
